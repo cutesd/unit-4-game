@@ -7,29 +7,29 @@ $(function () {
                 name: 'Luke Skywalker',
                 img: 'http://placehold.it/150x150',
                 cont: undefined,
-                health: 250,
-                pwr: { powerBase: 5, attack: 5, counter: 10 }
+                health: 120,
+                pwr: { powerBase: 8, attack: 8, counter: 10 }
             },
             {
                 name: 'Chewbacca',
                 img: 'http://placehold.it/150x150',
                 cont: undefined,
                 health: 90,
-                pwr: { powerBase: 4, attack: 4, counter: 8 }
+                pwr: { powerBase: 4, attack: 4, counter: 5 }
             },
             {
                 name: 'Darth Vader',
                 img: 'http://placehold.it/150x150',
                 cont: undefined,
-                health: 250,
-                pwr: { powerBase: 15, attack: 15, counter: 25 }
+                health: 150,
+                pwr: { powerBase: 10, attack: 10, counter: 20 }
             },
             {
                 name: 'The Emperor',
                 img: 'http://placehold.it/150x150',
                 cont: undefined,
-                health: 300,
-                pwr: { powerBase: 20, attack: 20, counter: 40 }
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
             },
         ];
 
@@ -126,24 +126,31 @@ $(function () {
         function attack(e) {
             // PLAYER ATTACKS
             opponent.health -= player.pwr.attack;
+            healthUpdate(opponent);
+
+            if (opponent.health <= 0) {
+                //YOU WIN
+                commentaryUpdate('<p>You have defeated ' + opponent.name + '. Choose another opponent.</p');
+                player.pwr.attack += player.pwr.powerBase;
+                attack_btn.replaceWith(playAgain_btn);
+                playAgain_btn.on("click", playAgain);
+                return;
+            }
+
             // OPPONENT COUNTERATTACKS
             player.health -= opponent.pwr.counter;
             //
             healthUpdate(player);
-            healthUpdate(opponent);
+
             //
             if (player.health <= 0) {
                 //YOU LOSE
                 commentaryUpdate('<p>You have been defeated ... GAME OVER!!</p>');
-            } else if (opponent.health <= 0) {
-                //YOU WIN
-                commentaryUpdate('<p>You have defeated '+ opponent.name+ '. Choose another opponent.</p');
-                attack_btn.replaceWith(playAgain_btn);
-                playAgain_btn.on("click",playAgain);
-            } else {
-                commentaryUpdate();
-                player.pwr.attack += player.pwr.powerBase;
+                return;
             }
+
+            commentaryUpdate();
+            player.pwr.attack += player.pwr.powerBase;
         }
 
         function healthUpdate(player) {
@@ -154,12 +161,12 @@ $(function () {
         function commentaryUpdate(str) {
             if (str == undefined) {
                 comment.html('<p>You attacked ' + opponent.name + ' for ' + player.pwr.attack + ' damage.</p><p>' + opponent.name + ' attacked you back for ' + opponent.pwr.counter + ' damage.</p >');
-            }else{
+            } else {
                 comment.html(str);
             }
         }
 
-        function playAgain(){
+        function playAgain() {
             opponent = undefined;
             commentaryUpdate('');
             opponentSlot.empty();
