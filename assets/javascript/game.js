@@ -7,7 +7,7 @@ $(function () {
                 name: 'Luke Skywalker',
                 img: 'http://placehold.it/150x150',
                 cont: undefined,
-                health: 100,
+                health: 250,
                 pwr: { powerBase: 5, attack: 5, counter: 10 }
             },
             {
@@ -61,15 +61,14 @@ $(function () {
             //
             attack_btn.addClass('btn btn-lg btn-danger attack-btn');
             attack_btn.text('ATTACK');
-            attack_btn.on("click", attack);
             //
             playAgain_btn.addClass('btn btn-lg btn-info playAgain-btn');
             playAgain_btn.text('Play Again');
-            playAgain_btn.on("click",playAgain);
             //
             restart_btn.addClass('btn btn-lg btn-warning restart-btn');
             restart_btn.text('Restart');
             //
+            main.append(playerChoose);
             startGame();
         }
 
@@ -97,7 +96,7 @@ $(function () {
         }
 
         function startGame() {
-            main.append(playerChoose);
+            playerChoose.removeClass('d-none');
         }
 
         function playerSelect(e) {
@@ -117,9 +116,10 @@ $(function () {
         function beginAttack() {
             battleground.append(playerSlot);
             battleground.append(attack_btn);
+            attack_btn.on("click", attack);
             battleground.append(opponentSlot);
             battleground.append(comment);
-            playerChoose.remove();
+            playerChoose.addClass('d-none');
             main.append(battleground);
         }
 
@@ -139,6 +139,7 @@ $(function () {
                 //YOU WIN
                 commentaryUpdate('<p>You have defeated '+ opponent.name+ '. Choose another opponent.</p');
                 attack_btn.replaceWith(playAgain_btn);
+                playAgain_btn.on("click",playAgain);
             } else {
                 commentaryUpdate();
                 player.pwr.attack += player.pwr.powerBase;
@@ -160,10 +161,11 @@ $(function () {
 
         function playAgain(){
             opponent = undefined;
-            $.each(battleground, function(i,div){
-                div.remove();
-            });
-
+            commentaryUpdate('');
+            opponentSlot.empty();
+            battleground.empty();
+            battleground.remove();
+            startGame();
         }
 
     }
