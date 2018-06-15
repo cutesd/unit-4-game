@@ -5,32 +5,88 @@ $(function () {
         var player_arr = [
             {
                 name: 'Luke Skywalker',
-                img: 'assets/images/luke_sm.jpg',
+                img: 'assets/images/luke.jpg',
                 cont: undefined,
                 health: 120,
                 pwr: { powerBase: 8, attack: 8, counter: 10 }
             },
             {
                 name: 'Chewbacca',
-                img: 'assets/images/chewy_sm.jpg',
+                img: 'assets/images/chewy.jpg',
                 cont: undefined,
                 health: 90,
                 pwr: { powerBase: 4, attack: 4, counter: 5 }
             },
             {
                 name: 'Darth Vader',
-                img: 'assets/images/darth_sm.jpg',
+                img: 'assets/images/darth.jpg',
                 cont: undefined,
                 health: 150,
                 pwr: { powerBase: 10, attack: 10, counter: 20 }
             },
             {
                 name: 'The Emperor',
-                img: 'assets/images/emperor_sm.jpg',
+                img: 'assets/images/emperor.jpg',
                 cont: undefined,
                 health: 180,
                 pwr: { powerBase: 12, attack: 12, counter: 25 }
             },
+            {
+                name: 'Boba Fett',
+                img: 'assets/images/boba.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Yoda',
+                img: 'assets/images/yoda.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Jabba the Hutt',
+                img: 'assets/images/jabba.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Leia',
+                img: 'assets/images/leia.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Ewok',
+                img: 'assets/images/ewok.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'R2D2',
+                img: 'assets/images/R2.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Obi Wan Kenobe',
+                img: 'assets/images/obi.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            },
+            {
+                name: 'Storm Trooper',
+                img: 'assets/images/trooper.jpg',
+                cont: undefined,
+                health: 180,
+                pwr: { powerBase: 12, attack: 12, counter: 25 }
+            }
         ];
 
         var player;
