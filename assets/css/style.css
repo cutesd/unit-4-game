@@ -1,4 +1,27 @@
 
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700');
+
+html, body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    background-color:#000;
+    background: url('../images/starwars-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Anonymous Pro', monospace;
+}
+
+h1{
+    color: #FFFF00;
+    letter-spacing: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
 .playerChoose{
     display:flex;
     display: -webkit-flex; /* Safari */
@@ -19,11 +42,10 @@
     -webkit-flex-wrap: wrap; /* Safari 6.1+ */
     margin: 0 auto;
     width:50%;
+    height:300px;
 }
 
 .player{
-    width:150px;
-    height:150px;
     margin: 1rem;
 }
 
@@ -31,12 +53,47 @@
     cursor:pointer;
 }
 
-.player .name{
+.player img{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+}
 
+.player .name{
+    background-color:greenyellow;
+    margin-top: -30px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 1.35rem;
 }
 
 .player .health{
+    margin-top: -20px;
+    width: 175px;
+}
 
+.health .hp{
+    position: relative;
+    display: inline;
+    background-color:rgba(0,0,0,0);
+    top: -15px;
+    left: 0px;
+    text-align: center;
+    color:#FFF;
+    font-weight:bold;
+    z-index: 2;
+}
+
+.health span{
+    display: inline-block;
+    background-color: #FFF;
+    position: relative;
+    top: -34px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    z-index: -1;
 }
 
 .playerSlot{
@@ -45,4 +102,43 @@
 
 .commentArea{
     align-self: flex-end;
+    background-color:#FFF;
+    padding: 10px 20px;
 }
+
+.commentArea p{
+    margin:0;
+}
+
+.heart-shape{
+    position: relative;
+    width: 24px;
+    height: 24px;
+    top:15px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background-color: #FF0000;
+  }
+  .heart-shape:before,
+  .heart-shape:after{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    content: '';
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #FF0000;
+  }
+  .heart-shape:before{
+    bottom: 0px;
+    left: -12px;
+  }
+  .heart-shape:after{
+    top: -12px;
+    right: 0px;
+  }

@@ -5,28 +5,28 @@ $(function () {
         var player_arr = [
             {
                 name: 'Luke Skywalker',
-                img: 'http://placehold.it/150x150',
+                img: 'assets/images/luke_sm.jpg',
                 cont: undefined,
                 health: 120,
                 pwr: { powerBase: 8, attack: 8, counter: 10 }
             },
             {
                 name: 'Chewbacca',
-                img: 'http://placehold.it/150x150',
+                img: 'assets/images/chewy_sm.jpg',
                 cont: undefined,
                 health: 90,
                 pwr: { powerBase: 4, attack: 4, counter: 5 }
             },
             {
                 name: 'Darth Vader',
-                img: 'http://placehold.it/150x150',
+                img: 'assets/images/darth_sm.jpg',
                 cont: undefined,
                 health: 150,
                 pwr: { powerBase: 10, attack: 10, counter: 20 }
             },
             {
                 name: 'The Emperor',
-                img: 'http://placehold.it/150x150',
+                img: 'assets/images/emperor_sm.jpg',
                 cont: undefined,
                 health: 180,
                 pwr: { powerBase: 12, attack: 12, counter: 25 }
@@ -37,6 +37,7 @@ $(function () {
         var opponent;
 
         var main = $('#game-container');
+        var instr = $('<h1>');
         var playerChoose = $('<div>');
         var battleground = $('<div>');
         var playerSlot = $('<div>');
@@ -47,15 +48,21 @@ $(function () {
         var playAgain_btn = $('<btn>');
         var restart_btn = $('<btn>');
 
+        // var audio = {};
+        // audio["walk"] = new Audio();
+        // audio["walk"].src = "http://www.rangde.org/static/bell-ring-01.mp3"
+        // audio["walk"].addEventListener('load', function () {
+        //     audio["walk"].play();
+        // });
+
 
         this.play = function () {
-            console.log('ready');
             $.each(player_arr, createPlayer);
             //
             playerChoose.addClass("playerChoose");
             battleground.addClass("battleground");
             comment.addClass('commentArea');
-            comment.text('This is commentary text.');
+
             playerSlot.addClass("playerSlot");
             opponentSlot.addClass("playerSlot");
             //
@@ -68,6 +75,8 @@ $(function () {
             restart_btn.addClass('btn btn-lg btn-warning restart-btn');
             restart_btn.text('Restart');
             //
+            instrUpdate('Choose Your Player');
+            main.append(instr);
             main.append(playerChoose);
             startGame();
         }
@@ -75,18 +84,32 @@ $(function () {
         function createPlayer(i, player) {
             player.pNum = i;
             var newDiv = $('<div>');
-            newDiv.css("background", "url(" + player.img + ")");
             newDiv.addClass('player');
             newDiv.attr('id', 'p' + i);
             //
+            var pic = $('<img>');
+            pic.attr('src', player.img);
+            //
             var healthDiv = $('<div>');
             healthDiv.addClass('health');
-            healthDiv.text(player.health);
+            var heart = $('<div>');
+            heart.addClass('heart-shape');
+            healthDiv.append(heart);
+            //<span class="hp">90</span>
+            var hp = $('<span>');
+            hp.addClass('hp');
+            hp.text(player.health);
+            healthDiv.append(hp);
+            //span>&nbsp;Health Points</span>
+            var span = $('<span>');
+            span.html('&nbsp;Health Points');
+            healthDiv.append(span);
             //
             var nameDiv = $('<div>');
-            nameDiv.addClass('playerName');
+            nameDiv.addClass('name');
             nameDiv.text(player.name);
             //
+            newDiv.append(pic);
             newDiv.append(healthDiv);
             newDiv.append(nameDiv);
             newDiv.on("click", playerSelect);
@@ -104,6 +127,7 @@ $(function () {
             if (player == undefined) {
                 player = player_arr[$(this)[0].id.substr(-1)];
                 playerSlot.append($(this));
+                instrUpdate('Choose Your Opponent');
                 console.log(player);
             } else if (opponent == undefined) {
                 opponent = player_arr[$(this)[0].id.substr(-1)];
@@ -114,11 +138,11 @@ $(function () {
         }
 
         function beginAttack() {
+            instrUpdate(' ');
             battleground.append(playerSlot);
             battleground.append(attack_btn);
             attack_btn.on("click", attack);
             battleground.append(opponentSlot);
-            battleground.append(comment);
             playerChoose.addClass('d-none');
             main.append(battleground);
         }
@@ -155,10 +179,14 @@ $(function () {
 
         function healthUpdate(player) {
             var pID = "#p" + player.pNum;
-            $(pID).find('.health').text(player.health);
+            $(pID).find('.hp').text(player.health);
         }
 
         function commentaryUpdate(str) {
+            console.log($.contains(comment));
+            if (!$.contains(comment)) {
+                battleground.append(comment);
+            }
             if (str == undefined) {
                 comment.html('<p>You attacked ' + opponent.name + ' for ' + player.pwr.attack + ' damage.</p><p>' + opponent.name + ' attacked you back for ' + opponent.pwr.counter + ' damage.</p >');
             } else {
@@ -166,9 +194,14 @@ $(function () {
             }
         }
 
+        function instrUpdate(str) {
+            instr.text(str);
+        }
+
         function playAgain() {
             opponent = undefined;
             commentaryUpdate('');
+            instrUpdate('Choose Your Opponent');
             opponentSlot.empty();
             battleground.empty();
             battleground.remove();
