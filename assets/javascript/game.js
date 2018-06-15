@@ -95,6 +95,8 @@ $(function () {
 
         function createPlayer(i, player) {
             player.pNum = i;
+            player.orig = { ap: player.pwr.attack, hp: player.health };
+            //
             var newDiv = $('<div>');
             newDiv.addClass('player');
             newDiv.attr('id', 'p' + i);
@@ -165,7 +167,10 @@ $(function () {
             if (opponent.health <= 0) {
                 // You beat them all
                 if ($(playerChoose).children().length === 0) {
-                    
+                    reset();
+                    instrUpdate('You Won!  GAME OVER!!');
+                    main.append(instr);
+                    return;
                 }
                 // YOU WIN
                 commentaryUpdate('<p>You have defeated ' + opponent.name + '. Choose another opponent.</p');
@@ -184,6 +189,8 @@ $(function () {
             if (player.health <= 0) {
                 //YOU LOSE
                 commentaryUpdate('<p>You have been defeated ... GAME OVER!!</p>');
+                attack_btn.replaceWith(restart_btn);
+                restart_btn.on("click", restart);
                 return;
             }
 
@@ -223,13 +230,21 @@ $(function () {
         }
 
         function restart() {
-
+            reset();
+            firstTime = true;
+            startGame();
         }
 
         function reset() {
+            player = opponent = undefined;
             playerSlot.empty();
             opponentSlot.empty();
             comment.empty();
+            $.each(player_arr, function (i, player) {
+                player.pwr.attack = player.orig.ap;
+                player.health = player.orig.hp;
+            });
+            playerChoose.empty();
             battleground.empty();
             main.empty();
         }
