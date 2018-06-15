@@ -22,6 +22,43 @@ h1{
     text-align: center;
 }
 
+.opener{
+    position:relative;
+    width: 650px;
+    height:500px;
+    margin: 5rem auto;
+}
+
+.opener h4{
+    color: #FFFF00;
+    text-align: center;
+    margin-top: -15px;
+}
+
+.open-instr{
+    padding: 0;
+    padding-left: 40px;
+    margin-top: -55px;
+}
+
+.open-btn{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:100%;
+    /* background-color:#F00; */
+    opacity:.5;
+}
+
+.open-btn:hover{
+ cursor:pointer;
+}
+
+.opener img{
+    position:relative;
+
+}
+
 .playerChoose{
     display:flex;
     display: -webkit-flex; /* Safari */

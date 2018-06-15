@@ -6,6 +6,7 @@ $(function () {
             {
                 name: 'Luke Skywalker',
                 img: 'assets/images/luke.jpg',
+                sndName: 'luke',
                 cont: undefined,
                 health: 120,
                 pwr: { powerBase: 8, attack: 8, counter: 10 }
@@ -13,6 +14,7 @@ $(function () {
             {
                 name: 'Chewbacca',
                 img: 'assets/images/chewy.jpg',
+                sndName: 'chewy',
                 cont: undefined,
                 health: 90,
                 pwr: { powerBase: 4, attack: 4, counter: 5 }
@@ -20,6 +22,7 @@ $(function () {
             {
                 name: 'Darth Vader',
                 img: 'assets/images/darth.jpg',
+                sndName: 'darth',
                 cont: undefined,
                 health: 150,
                 pwr: { powerBase: 10, attack: 10, counter: 20 }
@@ -27,66 +30,75 @@ $(function () {
             {
                 name: 'The Emperor',
                 img: 'assets/images/emperor.jpg',
+                sndName: 'emperor',
                 cont: undefined,
                 health: 180,
                 pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Boba Fett',
-                img: 'assets/images/boba.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Yoda',
-                img: 'assets/images/yoda.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Jabba the Hutt',
-                img: 'assets/images/jabba.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Leia',
-                img: 'assets/images/leia.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Ewok',
-                img: 'assets/images/ewok.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'R2D2',
-                img: 'assets/images/R2.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Obi Wan Kenobe',
-                img: 'assets/images/obi.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            },
-            {
-                name: 'Storm Trooper',
-                img: 'assets/images/trooper.jpg',
-                cont: undefined,
-                health: 180,
-                pwr: { powerBase: 12, attack: 12, counter: 25 }
-            }
+             }//,
+            // {
+            //     name: 'Boba Fett',
+            //     img: 'assets/images/boba.jpg',
+            //     sndName: 'boba',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // },
+            // {
+            //     name: 'Yoda',
+            //     img: 'assets/images/yoda.jpg',
+            //     sndName: 'yoda',
+            //     cont: undefined,
+            //     health: 350,
+            //     pwr: { powerBase: 30, attack: 30, counter: 50 }
+            // },
+            // {
+            //     name: 'Jabba the Hutt',
+            //     img: 'assets/images/jabba.jpg',
+            //     sndName: 'jabba',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // },
+            // {
+            //     name: 'Leia',
+            //     img: 'assets/images/leia.jpg',
+            //     sndName: 'leia',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // },
+            // {
+            //     name: 'Ewok',
+            //     img: 'assets/images/ewok.jpg',
+            //     sndName: 'ewok',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // },
+            // {
+            //     name: 'R2D2',
+            //     img: 'assets/images/R2.jpg',
+            //     sndName: 'R2',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // },
+            // {
+            //     name: 'Obi Wan Kenobe',
+            //     img: 'assets/images/obi.jpg',
+            //     sndName: 'obi',
+            //     cont: undefined,
+            //     health: 150,
+            //     pwr: { powerBase: 10, attack: 10, counter: 20 }
+            // },
+            // {
+            //     name: 'Storm Trooper',
+            //     img: 'assets/images/trooper.jpg',
+            //     sndName: 'trooper',
+            //     cont: undefined,
+            //     health: 180,
+            //     pwr: { powerBase: 12, attack: 12, counter: 25 }
+            // }
         ];
 
         var player;
@@ -94,6 +106,7 @@ $(function () {
         var firstTime = true;
 
         var main = $('#game-container');
+        var opener = $('<div>');
         var instr = $('<h1>');
         var playerChoose = $('<div>');
         var battleground = $('<div>');
@@ -105,24 +118,27 @@ $(function () {
         var playAgain_btn = $('<btn>');
         var restart_btn = $('<btn>');
 
-        // var audio = {};
-        // audio["walk"] = new Audio();
-        // audio["walk"].src = "http://www.rangde.org/static/bell-ring-01.mp3"
-        // audio["walk"].addEventListener('load', function () {
-        //     audio["walk"].play();
-        // });
-
+        var audio = {};
+        var curr_snd;
 
         this.play = function () {
-            //
             init();
         }
 
         function init() {
+            //
+            addSnd("main-title");
+            addSnd("win");
+            addSnd("lose");
+            addSnd("complete");
+            for (var i = 1; i <= 4; i++) {
+                addSnd("saber" + i);
+            }
+            //
             playerChoose.addClass("playerChoose");
             battleground.addClass("battleground");
             comment.addClass('commentArea');
-
+            //
             playerSlot.addClass("playerSlot");
             opponentSlot.addClass("playerSlot");
             //
@@ -135,7 +151,48 @@ $(function () {
             restart_btn.addClass('btn btn-lg btn-warning restart-btn');
             restart_btn.text('Restart');
             //
-            startGame();
+            opening();
+        }
+
+        function opening() {
+            opener.addClass('opener');
+            var img = $('<img>');
+            img.addClass('img-fluid');
+            img.attr('src', 'assets/images/starwars-title.png')
+            opener.append(img);
+            //
+            var instr = $('<h1>');
+            instr.addClass('open-instr');
+            instr.text('Click HERE to begin.');
+            opener.append(instr);
+            //
+            var note = $('<h4>');
+            note.text('** turn on your speakers **');
+            opener.append(note);
+            //
+            var btn = $('<div>');
+            btn.addClass('open-btn');
+            opener.append(btn);
+            
+            main.append(opener);
+            btn.on("click", function () {
+                
+                img.animate({
+                    width: "0px",
+                    height: "0px",
+                    left: "50%",
+                    bottom: "-40%"
+
+                }, 15000, 'easeInCirc', function () {
+                    console.log("Done animating");
+                    opener.remove();
+                    startGame();
+                });
+                playSnd("main-title");
+                btn.remove();
+                note.remove();
+                instr.remove();
+            });
         }
 
         function startGame() {
@@ -152,6 +209,7 @@ $(function () {
         function createPlayer(i, player) {
             player.pNum = i;
             player.orig = { ap: player.pwr.attack, hp: player.health };
+            addSnd(player.sndName);
             //
             var newDiv = $('<div>');
             newDiv.addClass('player');
@@ -188,18 +246,38 @@ $(function () {
             playerChoose.append(player.cont);
         }
 
+        function addSnd(str) {
+            console.log("adding snd: " + str);
+            audio[str] = new Audio();
+            audio[str].src = "assets/snds/" + str + ".mp3"
+        }
 
+        function playSnd(str) {
+            console.log("play snd: " + str);
+            stopSnd();
+            curr_snd = audio[str];
+            curr_snd.play();
+        }
+
+        function stopSnd() {
+            if (curr_snd !== undefined) {
+                curr_snd.pause(); // Stop playing
+                curr_snd.currentTime = 0; // Reset time
+            }
+        }
 
         function playerSelect(e) {
             console.log($(this)[0].id);
             if (player == undefined) {
-                player = player_arr[$(this)[0].id.substr(-1)];
+                player = player_arr[$(this)[0].id.substr(1)];
                 playerSlot.append($(this));
                 instrUpdate('Choose Your Opponent');
+                playSnd(player.sndName);
                 console.log(player);
             } else if (opponent == undefined) {
-                opponent = player_arr[$(this)[0].id.substr(-1)];
+                opponent = player_arr[$(this)[0].id.substr(1)];
                 opponentSlot.append($(this));
+                playSnd(opponent.sndName);
                 console.log(opponent);
                 beginAttack();
             }
@@ -223,12 +301,14 @@ $(function () {
             if (opponent.health <= 0) {
                 // You beat them all
                 if ($(playerChoose).children().length === 0) {
+                    playSnd("complete");
                     reset();
                     instrUpdate('You Won!  GAME OVER!!');
                     main.append(instr);
                     return;
                 }
                 // YOU WIN
+                playSnd("win");
                 commentaryUpdate('<p>You have defeated ' + opponent.name + '. Choose another opponent.</p');
                 player.pwr.attack += player.pwr.powerBase;
                 attack_btn.replaceWith(playAgain_btn);
@@ -244,12 +324,15 @@ $(function () {
             //
             if (player.health <= 0) {
                 //YOU LOSE
+                playSnd("lose");
                 commentaryUpdate('<p>You have been defeated ... GAME OVER!!</p>');
                 attack_btn.replaceWith(restart_btn);
                 restart_btn.on("click", restart);
                 return;
             }
 
+            var rnd = Math.floor(Math.random() * 4)+1;
+            playSnd("saber"+rnd);
             commentaryUpdate();
             player.pwr.attack += player.pwr.powerBase;
         }
