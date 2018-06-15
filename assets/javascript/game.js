@@ -35,6 +35,7 @@ $(function () {
 
         var player;
         var opponent;
+        var firstTime = true;
 
         var main = $('#game-container');
         var instr = $('<h1>');
@@ -57,8 +58,11 @@ $(function () {
 
 
         this.play = function () {
-            $.each(player_arr, createPlayer);
             //
+            init();
+        }
+
+        function init() {
             playerChoose.addClass("playerChoose");
             battleground.addClass("battleground");
             comment.addClass('commentArea');
@@ -75,10 +79,18 @@ $(function () {
             restart_btn.addClass('btn btn-lg btn-warning restart-btn');
             restart_btn.text('Restart');
             //
-            instrUpdate('Choose Your Player');
-            main.append(instr);
-            main.append(playerChoose);
             startGame();
+        }
+
+        function startGame() {
+            if (firstTime) {
+                $.each(player_arr, createPlayer);
+                instrUpdate('Choose Your Player');
+                main.append(instr);
+                main.append(playerChoose);
+                firstTime = !firstTime;
+            }
+            playerChoose.removeClass('d-none');
         }
 
         function createPlayer(i, player) {
@@ -118,9 +130,7 @@ $(function () {
             playerChoose.append(player.cont);
         }
 
-        function startGame() {
-            playerChoose.removeClass('d-none');
-        }
+
 
         function playerSelect(e) {
             console.log($(this)[0].id);
@@ -153,7 +163,11 @@ $(function () {
             healthUpdate(opponent);
 
             if (opponent.health <= 0) {
-                //YOU WIN
+                // You beat them all
+                if ($(playerChoose).children().length === 0) {
+                    
+                }
+                // YOU WIN
                 commentaryUpdate('<p>You have defeated ' + opponent.name + '. Choose another opponent.</p');
                 player.pwr.attack += player.pwr.powerBase;
                 attack_btn.replaceWith(playAgain_btn);
@@ -206,6 +220,18 @@ $(function () {
             battleground.empty();
             battleground.remove();
             startGame();
+        }
+
+        function restart() {
+
+        }
+
+        function reset() {
+            playerSlot.empty();
+            opponentSlot.empty();
+            comment.empty();
+            battleground.empty();
+            main.empty();
         }
 
     }
