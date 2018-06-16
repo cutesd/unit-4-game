@@ -2,6 +2,11 @@ $(function () {
 
     var StarWarsRPG = function () {
 
+        var player;
+        var opponent;
+        var firstTime = true;
+
+        // Player Object
         var player_arr = [
             {
                 name: 'Luke Skywalker',
@@ -101,10 +106,7 @@ $(function () {
             // }
         ];
 
-        var player;
-        var opponent;
-        var firstTime = true;
-
+        // Content Containers
         var main = $('#game-container');
         var opener = $('<div>');
         var instr = $('<h1>');
@@ -114,19 +116,20 @@ $(function () {
         var opponentSlot = $('<div>');
         var comment = $('<div>');
 
+        // Button Containers
         var attack_btn = $('<btn>');
         var playAgain_btn = $('<btn>');
         var restart_btn = $('<btn>');
 
+        // Audio
         var audio = {};
         var curr_snd;
 
-        this.play = function () {
-            init();
-        }
+        this.play = init;
 
+        // Initializes Game
         function init() {
-            //
+            // Load Game Sounds
             addSnd("main-title");
             addSnd("win");
             addSnd("lose");
@@ -154,6 +157,7 @@ $(function () {
             opening();
         }
 
+        // Opening screen/animation
         function opening() {
             opener.addClass('opener');
             var img = $('<img>');
@@ -176,7 +180,6 @@ $(function () {
             
             main.append(opener);
             btn.on("click", function () {
-                
                 img.animate({
                     width: "0px",
                     height: "0px",
@@ -184,7 +187,6 @@ $(function () {
                     bottom: "-40%"
 
                 }, 15000, 'easeInCirc', function () {
-                    console.log("Done animating");
                     opener.remove();
                     startGame();
                 });
@@ -195,17 +197,21 @@ $(function () {
             });
         }
 
+        // Start the Game
         function startGame() {
             if (firstTime) {
+                // Create all Players
                 $.each(player_arr, createPlayer);
                 instrUpdate('Choose Your Player');
                 main.append(instr);
                 main.append(playerChoose);
                 firstTime = !firstTime;
             }
+            // Display the Player Options
             playerChoose.removeClass('d-none');
         }
 
+        // Function to Create all Players
         function createPlayer(i, player) {
             player.pNum = i;
             player.orig = { ap: player.pwr.attack, hp: player.health };
