@@ -157,7 +157,7 @@ $(function () {
             playAgain_btn.addClass('btn btn-lg btn-info playAgain-btn');
             playAgain_btn.text('Play Again');
             //
-            restart_btn.addClass('btn btn-lg btn-warning restart-btn');
+            restart_btn.addClass('btn btn-lg btn-warning');
             restart_btn.text('Restart');
             //
             opening();
@@ -320,6 +320,9 @@ $(function () {
                     reset();
                     instrUpdate('You Won!  GAME OVER!!');
                     main.append(instr);
+                    restart_btn.addClass('restart-btn');
+                    instr.append(restart_btn);
+                    restart_btn.on("click", restart);
                     return;
                 }
                 // YOU WIN
@@ -387,6 +390,7 @@ $(function () {
 
         function restart() {
             reset();
+            restart_btn.removeClass('restart-btn');
             firstTime = true;
             startGame();
         }

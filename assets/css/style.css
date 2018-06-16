@@ -133,10 +133,6 @@ h1{
     z-index: -1;
 }
 
-.playerSlot{
-
-}
-
 .commentArea{
     align-self: flex-end;
     background-color:#FFF;
@@ -145,6 +141,12 @@ h1{
 
 .commentArea p{
     margin:0;
+}
+
+.restart-btn{
+    display:block;
+    width:150px;
+    margin: 1rem auto;
 }
 
 .heart-shape{
