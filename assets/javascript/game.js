@@ -39,7 +39,7 @@ $(function () {
                 cont: undefined,
                 health: 180,
                 pwr: { powerBase: 12, attack: 12, counter: 25 }
-             }//,
+            }//,
             // {
             //     name: 'Boba Fett',
             //     img: 'assets/images/boba.jpg',
@@ -126,6 +126,12 @@ $(function () {
         var curr_snd;
 
         this.play = init;
+        this.skip = function () {
+            if (firstTime) {
+                opener.remove();
+                startGame();
+            }
+        }
 
         // Initializes Game
         function init() {
@@ -177,7 +183,7 @@ $(function () {
             var btn = $('<div>');
             btn.addClass('open-btn');
             opener.append(btn);
-            
+
             main.append(opener);
             btn.on("click", function () {
                 img.animate({
@@ -213,8 +219,11 @@ $(function () {
 
         // Function to Create all Players
         function createPlayer(i, player) {
+            // Player number
             player.pNum = i;
+            // Original player settings for resets
             player.orig = { ap: player.pwr.attack, hp: player.health };
+            // 
             addSnd(player.sndName);
             //
             var newDiv = $('<div>');
@@ -317,6 +326,7 @@ $(function () {
                 playSnd("win");
                 commentaryUpdate('<p>You have defeated ' + opponent.name + '. Choose another opponent.</p');
                 player.pwr.attack += player.pwr.powerBase;
+                opponentSlot.find('.name').css('background-color', '#CC0000');
                 attack_btn.replaceWith(playAgain_btn);
                 playAgain_btn.on("click", playAgain);
                 return;
@@ -332,13 +342,14 @@ $(function () {
                 //YOU LOSE
                 playSnd("lose");
                 commentaryUpdate('<p>You have been defeated ... GAME OVER!!</p>');
+                playerSlot.find('.name').css('background-color', '#CC0000');
                 attack_btn.replaceWith(restart_btn);
                 restart_btn.on("click", restart);
                 return;
             }
 
-            var rnd = Math.floor(Math.random() * 4)+1;
-            playSnd("saber"+rnd);
+            var rnd = Math.floor(Math.random() * 4) + 1;
+            playSnd("saber" + rnd);
             commentaryUpdate();
             player.pwr.attack += player.pwr.powerBase;
         }
@@ -399,6 +410,12 @@ $(function () {
 
     var myGame = new StarWarsRPG();
     myGame.play();
+
+    $(document).on('keypress', function (e) {
+        if (e.key === "S") {
+            myGame.skip();
+        }
+    });
 
 
 });
