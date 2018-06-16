@@ -33,7 +33,7 @@ $(function () {
                 pwr: { powerBase: 10, attack: 10, counter: 20 }
             },
             {
-                name: 'The Emperor',
+                name: 'Darth Sidious',
                 img: 'assets/images/emperor.jpg',
                 sndName: 'emperor',
                 cont: undefined,
@@ -133,6 +133,8 @@ $(function () {
             }
         }
 
+        //===============  SET UP & OPENING SCREEN ==================== //
+
         // Initializes Game
         function init() {
             // Load Game Sounds
@@ -143,7 +145,7 @@ $(function () {
             for (var i = 1; i <= 4; i++) {
                 addSnd("saber" + i);
             }
-            //
+            // 
             playerChoose.addClass("playerChoose");
             battleground.addClass("battleground");
             comment.addClass('commentArea');
@@ -179,19 +181,19 @@ $(function () {
             var note = $('<h4>');
             note.text('** turn on your speakers **');
             opener.append(note);
-            //
+            // 
             var btn = $('<div>');
             btn.addClass('open-btn');
             opener.append(btn);
-
+            //
             main.append(opener);
+            //
             btn.on("click", function () {
                 img.animate({
                     width: "0px",
                     height: "0px",
                     left: "50%",
                     bottom: "-40%"
-
                 }, 15000, 'easeInCirc', function () {
                     opener.remove();
                     startGame();
@@ -207,7 +209,7 @@ $(function () {
         function startGame() {
             if (firstTime) {
                 // Create all Players
-                $.each(player_arr, createPlayer);
+                $.each(player_arr, buildPlayer);
                 instrUpdate('Choose Your Player');
                 main.append(instr);
                 main.append(playerChoose);
@@ -217,63 +219,88 @@ $(function () {
             playerChoose.removeClass('d-none');
         }
 
+        //===============  PLAYER CREATION & SELECTION  ==================== //
+
         // Function to Create all Players
-        function createPlayer(i, player) {
+        function buildPlayer(i, player) {
             // Player number
             player.pNum = i;
             // Original player settings for resets
             player.orig = { ap: player.pwr.attack, hp: player.health };
-            // 
+            // Adding the player sound
             addSnd(player.sndName);
-            //
-            var newDiv = $('<div>');
-            newDiv.addClass('player');
-            newDiv.attr('id', 'p' + i);
-            //
+
+            // Player Div 
+            var playerDiv = $('<div>');
+            playerDiv.addClass('player');
+            playerDiv.attr('id', 'p' + i);
+
+            // Picture
             var pic = $('<img>');
             pic.attr('src', player.img);
-            //
+
+            // Health
             var healthDiv = $('<div>');
             healthDiv.addClass('health');
+            // heart
             var heart = $('<div>');
             heart.addClass('heart-shape');
             healthDiv.append(heart);
-            //<span class="hp">90</span>
+            // health points #
             var hp = $('<span>');
             hp.addClass('hp');
             hp.text(player.health);
             healthDiv.append(hp);
-            //span>&nbsp;Health Points</span>
+            // health points text
             var span = $('<span>');
             span.html('&nbsp;Health Points');
             healthDiv.append(span);
-            //
+
+            // Name
             var nameDiv = $('<div>');
             nameDiv.addClass('name');
             nameDiv.text(player.name);
             //
-            newDiv.append(pic);
-            newDiv.append(healthDiv);
-            newDiv.append(nameDiv);
-            newDiv.on("click", playerSelect);
-            player.cont = newDiv;
+            playerDiv.append(pic);
+            playerDiv.append(healthDiv);
+            playerDiv.append(nameDiv);
+            playerDiv.on("click", playerSelect);
+            player.cont = playerDiv;
             //
             playerChoose.append(player.cont);
         }
 
+        // CHOOSE PLAYER & OPPONENT
+        function playerSelect(e) {
+            if (player == undefined) {
+                player = player_arr[$(this)[0].id.substr(1)];
+                playerSlot.append($(this));
+                instrUpdate('Choose Your Opponent');
+                playSnd(player.sndName);
+            } else if (opponent == undefined) {
+                opponent = player_arr[$(this)[0].id.substr(1)];
+                opponentSlot.append($(this));
+                playSnd(opponent.sndName);
+                beginAttack();
+            }
+        }
+
+        //===============  SOUND  ==================== //
+
+        // Creating sound objects
         function addSnd(str) {
-            console.log("adding snd: " + str);
             audio[str] = new Audio();
             audio[str].src = "assets/snds/" + str + ".mp3"
         }
 
+        // Play Sound
         function playSnd(str) {
-            console.log("play snd: " + str);
             stopSnd();
             curr_snd = audio[str];
             curr_snd.play();
         }
 
+        // Stop Sound
         function stopSnd() {
             if (curr_snd !== undefined) {
                 curr_snd.pause(); // Stop playing
@@ -281,40 +308,33 @@ $(function () {
             }
         }
 
-        function playerSelect(e) {
-            console.log($(this)[0].id);
-            if (player == undefined) {
-                player = player_arr[$(this)[0].id.substr(1)];
-                playerSlot.append($(this));
-                instrUpdate('Choose Your Opponent');
-                playSnd(player.sndName);
-                console.log(player);
-            } else if (opponent == undefined) {
-                opponent = player_arr[$(this)[0].id.substr(1)];
-                opponentSlot.append($(this));
-                playSnd(opponent.sndName);
-                console.log(opponent);
-                beginAttack();
-            }
-        }
+        //===============  BATTLE  ==================== //
 
+        // Turn on Battleground
         function beginAttack() {
+            //
             instrUpdate(' ');
+            //
             battleground.append(playerSlot);
+            // Attack Button
             battleground.append(attack_btn);
             attack_btn.on("click", attack);
+            //
             battleground.append(opponentSlot);
+            // Turn off player choice array
             playerChoose.addClass('d-none');
             main.append(battleground);
         }
 
+        // On Attack btn press
         function attack(e) {
             // PLAYER ATTACKS
             opponent.health -= player.pwr.attack;
             healthUpdate(opponent);
 
+            // YOU BEAT OPPONENT
             if (opponent.health <= 0) {
-                // You beat them all
+                // YOU BEAT ALL OPPONENTS
                 if ($(playerChoose).children().length === 0) {
                     playSnd("complete");
                     reset();
@@ -340,9 +360,8 @@ $(function () {
             //
             healthUpdate(player);
 
-            //
+            // YOU LOSE
             if (player.health <= 0) {
-                //YOU LOSE
                 playSnd("lose");
                 commentaryUpdate('<p>You have been defeated ... GAME OVER!!</p>');
                 playerSlot.find('.name').css('background-color', '#CC0000');
@@ -351,11 +370,14 @@ $(function () {
                 return;
             }
 
+            // BATTLE CONTINUES
             var rnd = Math.floor(Math.random() * 4) + 1;
             playSnd("saber" + rnd);
             commentaryUpdate();
             player.pwr.attack += player.pwr.powerBase;
         }
+
+        // ===============  DISPLAYS  ==================== //
 
         function healthUpdate(player) {
             var pID = "#p" + player.pNum;
@@ -363,7 +385,6 @@ $(function () {
         }
 
         function commentaryUpdate(str) {
-            console.log($.contains(comment));
             if (!$.contains(comment)) {
                 battleground.append(comment);
             }
@@ -377,6 +398,8 @@ $(function () {
         function instrUpdate(str) {
             instr.text(str);
         }
+
+        //===============  BUTTONS  ==================== //
 
         function playAgain() {
             opponent = undefined;
@@ -394,6 +417,8 @@ $(function () {
             firstTime = true;
             startGame();
         }
+
+        // ===============  RESET  ==================== //
 
         function reset() {
             player = opponent = undefined;
@@ -415,6 +440,7 @@ $(function () {
     var myGame = new StarWarsRPG();
     myGame.play();
 
+    // SKIP BUTTON --- skips opening scene
     $(document).on('keypress', function (e) {
         if (e.key === "S") {
             myGame.skip();
