@@ -24,3 +24,9 @@ Star Wars Role Playing Game: you choose a character and fight against other Star
 
 ## Author
 Kimberly Cooper
+
+## Other Credits
+I did not create any of the images or sounds in this game.  
+Icons are from http://www.vectorimages.org/.  
+Sound Clips are from the film.
+Music Clips are by John Williams.
